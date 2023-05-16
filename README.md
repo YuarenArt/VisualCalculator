@@ -2,6 +2,7 @@
 This is a simple calculator application built using Qt framework. It allows users to perform basic arithmetic calculations and converts expressions to reverse Polish notation (RPN).
 
 Features
+
 Arithmetic calculations: 
 The calculator supports addition, subtraction, multiplication, and division operations.
 
