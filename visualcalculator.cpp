@@ -1,5 +1,5 @@
 #include "visualcalculator.h"
-#include <QStack>
+#include <QClipboard>
 
 int getOperatorPrecedence(const QString& op) {
     if (op == "+" || op == "-") {
@@ -36,9 +36,15 @@ VisualCalculator::VisualCalculator(QWidget *parent) : QMainWindow(parent)
     equalBtn = new QPushButton("=");
     inputLayout->addWidget(equalBtn);
 
+    QHBoxLayout* resultLayout = new QHBoxLayout;
+    mainLayout->addLayout(resultLayout);
+
     showResult = new QLineEdit(centralWidget);
     showResult->setReadOnly(true);
-    mainLayout->addWidget(showResult);
+    resultLayout->addWidget(showResult);
+
+    copyBtn = new QPushButton("copy");
+    resultLayout->addWidget(copyBtn);
 
     // показывает что было введено пользователем
     textShow = new QTextEdit(centralWidget);
@@ -52,6 +58,7 @@ VisualCalculator::VisualCalculator(QWidget *parent) : QMainWindow(parent)
 
     connect(lineEdit, &QLineEdit::textChanged, this, &VisualCalculator::updateTextShow);
     connect(equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculate);
+    connect(copyBtn, &QPushButton::clicked, this, &VisualCalculator::copyExpressionToClipboard);
 }
 
 bool VisualCalculator::isValidInput(const QString& input)
@@ -82,6 +89,14 @@ void VisualCalculator::calculate()
 
     // Обновляем текст в showResult
     showResult->setText(QString::number(result));
+}
+
+void VisualCalculator::copyExpressionToClipboard()
+{
+    QString expression = showResult->text();
+
+    // Копируем выражение в буфер обмена
+    QApplication::clipboard()->setText(expression);
 }
 
 double VisualCalculator::calculateExpression(const QString& expression)
@@ -195,7 +210,8 @@ void VisualCalculator::updateTextShow(const QString& text)
     formattedText.replace("(", "( ");
     formattedText.replace(")", " )");
 
-   
+    QRegularExpression numberRegex("(\\d) (\\d)");
+    formattedText.replace(numberRegex, "\\1\\2");
 
     // Обновляем текст в textShow
     textShow->setText(formattedText);

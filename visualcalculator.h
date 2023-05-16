@@ -9,6 +9,8 @@
 #include <QTextEdit>
 #include <QRegularExpression>
 #include <QMessageBox>
+#include <QStack>
+#include <QtWidgets/QApplication>
 
 class VisualCalculator : public QMainWindow
 {
@@ -29,10 +31,13 @@ private:
     QLineEdit* lineEdit;
     QPushButton* equalBtn;
     QLineEdit* showResult;
+    QPushButton* copyBtn;
     
 public slots:
 
     void updateTextShow(const QString& text);
     void calculate();
+    void copyExpressionToClipboard();
+
 
 };
