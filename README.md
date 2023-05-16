@@ -1,6 +1,7 @@
 # Visual-calculator
 This is a simple calculator application built using Qt framework. It allows users to perform basic arithmetic calculations and converts expressions to reverse Polish notation (RPN).
 
+
 Features
 
 Arithmetic calculations: 
@@ -9,6 +10,7 @@ The calculator supports addition, subtraction, multiplication, and division oper
 Input validation: The input is validated to ensure that only valid characters and operators are accepted.
 
 Conversion to RPN: The application includes a method to convert an arithmetic expression to reverse Polish notation.
+
 
 
 Usage
