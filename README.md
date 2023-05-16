@@ -12,7 +12,6 @@ Input validation: The input is validated to ensure that only valid characters an
 Conversion to RPN: The application includes a method to convert an arithmetic expression to reverse Polish notation.
 
 
-
 Usage
 
 Enter an arithmetic expression in the input field.
