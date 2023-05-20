@@ -1,5 +1,6 @@
 #include "visualcalculator.h"
 #include <QClipboard>
+#include <ui_visualcalculator.h>
 
 int getOperatorPrecedence(const QString& op) {
     if (op == "+" || op == "-") {
@@ -14,89 +15,56 @@ int getOperatorPrecedence(const QString& op) {
     }
 }
 
-VisualCalculator::VisualCalculator(QWidget *parent) : QMainWindow(parent)
-{
-
-    QWidget* centralWidget = new QWidget(this);
-    setCentralWidget(centralWidget);
-
-    //основной вертикальный виджет куда всё размещается
-    QVBoxLayout* mainLayout = new QVBoxLayout(centralWidget);
-
-
-    QHBoxLayout* inputLayout = new QHBoxLayout;
-    mainLayout->addLayout(inputLayout);
-
-    // создания поля ввода
-    lineEdit = new QLineEdit(centralWidget);
-    inputLayout->addWidget(lineEdit);
-
-
-    // Создание кнопки "="
-    equalBtn = new QPushButton("=");
-    inputLayout->addWidget(equalBtn);
-
-    QHBoxLayout* resultLayout = new QHBoxLayout;
-    mainLayout->addLayout(resultLayout);
-
-    showResult = new QLineEdit(centralWidget);
-    showResult->setReadOnly(true);
-    resultLayout->addWidget(showResult);
-
-    copyBtn = new QPushButton("copy");
-    resultLayout->addWidget(copyBtn);
-
-    // показывает что было введено пользователем
-    textShow = new QTextEdit(centralWidget);
-    textShow->setReadOnly(true);
-    mainLayout->addWidget(textShow);
-
-    // Установка размера шрифта
-    QFont font = textShow->font();
-    font.setPointSize(font.pointSize() + 12);
-    textShow->setFont(font);
-
-    connect(lineEdit, &QLineEdit::textChanged, this, &VisualCalculator::updateTextShow);
-    connect(equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculate);
-    connect(copyBtn, &QPushButton::clicked, this, &VisualCalculator::copyExpressionToClipboard);
-}
-
-bool VisualCalculator::isValidInput(const QString& input)
+bool isValidInput(const QString& input)
 {
     QRegularExpression validRegex("^[0-9()+\\-*/. ]+$");
     QRegularExpressionMatch match = validRegex.match(input);
     return match.hasMatch();
 }
 
-bool VisualCalculator::isOperator(const QString& token)
+bool isOperator(const QString& token)
 {
     return token == "+" || token == "-" || token == "*" || token == "/";
 }
 
+VisualCalculator::VisualCalculator(QWidget *parent) : QMainWindow(parent), ui(new Ui::VisualCalculator)
+{
+    ui->setupUi(this);
+
+    ui->showResult->setReadOnly(true);
+    ui->textShow->setReadOnly(true);
+
+    // Установка размера шрифта
+    QFont font = ui->textShow->font();
+    font.setPointSize(font.pointSize() + 10);
+    ui->textShow->setFont(font);
+
+    connect(ui->lineEdit, &QLineEdit::textChanged, this, &VisualCalculator::updateTextShow);
+    connect(ui->equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculate);
+    connect(ui->copyBtn, &QPushButton::clicked, this, &VisualCalculator::copyExpressionToClipboard);
+}
+
+VisualCalculator::~VisualCalculator()
+{
+    delete ui;
+}
+
 void VisualCalculator::calculate()
 {
-    QString expression = textShow->toPlainText();
+    QString expression = ui->textShow->toPlainText();
 
     // Проверяем пустой ввод
     if (expression.isEmpty())
     {
         // Очищаем результат
-        showResult->setText(" ");
+        ui->showResult->setText(" ");
         return;
     }
 
     double result = calculateExpression(expression);
 
     // Обновляем текст в showResult
-    showResult->setText(QString::number(result));
-}
-
-void VisualCalculator::copyExpressionToClipboard()
-{
-    QString expression = showResult->text();
-
-    // Копируем выражение в буфер обмена
-    QApplication::clipboard()->setText(expression);
+    ui->showResult->setText(QString::number(result));
 }
 
 double VisualCalculator::calculateExpression(const QString& expression)
@@ -137,7 +105,7 @@ QStringList VisualCalculator::convertToRPN(const QString& expression) {
     QStringList tokens = expression.split(' ', Qt::SkipEmptyParts);
 
     for (const QString& token : tokens) {
-        if (!isOperator(token)) {
+        if (!isOperator(token) && token != "(" && token != ")") {
             // Проверяем, является ли токен числом
             bool isNumber;
             token.toDouble(&isNumber);
@@ -150,20 +118,38 @@ QStringList VisualCalculator::convertToRPN(const QString& expression) {
                 QMessageBox::warning(nullptr, "Warning", "Unknown operand");
             }
         }
+        else if (token == "(") {
+            // Текущий токен - открывающая скобка, добавляем ее в стек операторов
+            operatorStack.push(token);
+        }
+        else if (token == ")") {
+            // Текущий токен - закрывающая скобка
+
+            // Перемещаем операторы из стека в выходную очередь до тех пор,
+            // пока не встретим соответствующую открывающую скобку или стек не опустеет
+            while (!operatorStack.isEmpty() && operatorStack.top() != "(") {
+                outputQueue.append(operatorStack.pop());
+            }
+
+            // Если стек опустел и не было найдено открывающей скобки, значит в выражении скобки не сбалансированы
+            if (operatorStack.isEmpty()) {
+                QMessageBox::warning(nullptr, "Warning", "Unbalanced parentheses");
+                return QStringList();  // Возвращаем пустой список, чтобы обозначить ошибку
+            }
+
+            // Удаляем открывающую скобку из стека
+            operatorStack.pop();
+        }
         else {
             // Текущий токен - оператор
-            while (!operatorStack.isEmpty() && isOperator(operatorStack.top())) {
 
-                QString topOperator = operatorStack.top();
-                if (getOperatorPrecedence(token) <= getOperatorPrecedence(topOperator)) {
-                    // Текущий оператор имеет меньший или равный приоритет, чем оператор на вершине стека
-                    // Перемещаем оператор с вершины стека в выходную очередь
-                    outputQueue.append(operatorStack.pop());
-                }
-                else {
-                    break;
-                }
+            while (!operatorStack.isEmpty() && operatorStack.top() != "(" &&
+                getOperatorPrecedence(token) <= getOperatorPrecedence(operatorStack.top())) {
+                // Текущий оператор имеет меньший или равный приоритет, чем оператор на вершине стека
+                // Перемещаем оператор с вершины стека в выходную очередь
+                outputQueue.append(operatorStack.pop());
             }
+
             // Добавляем текущий оператор в стек
             operatorStack.push(token);
         }
@@ -200,20 +186,86 @@ double VisualCalculator::performOperation(double operand1, double operand2, cons
     }
 }
 
+// Добавляет недостающие закрывающие скобки
+void autoBalanceParentheses(QString& expression)
+{
+    QStack<QChar> parenthesesStack;
+
+    for (int i = 0; i < expression.length(); ++i) {
+        QChar ch = expression.at(i);
+
+        if (ch == '(') {
+            // Открывающая скобка, добавляем ее в стек
+            parenthesesStack.push(ch);
+        }
+        else if (ch == ')') {
+            // Закрывающая скобка
+
+            if (parenthesesStack.isEmpty()) {
+                // Нет соответствующей открывающей скобки, удаляем закрывающую скобку
+                expression.remove(i, 1);
+                --i;
+            }
+            else {
+                // Есть соответствующая открывающая скобка, удаляем ее из стека
+                parenthesesStack.pop();
+            }
+        }
+    }
+
+    // Добавляем недостающие закрывающие скобки
+    while (!parenthesesStack.isEmpty()) {
+        expression.append(')');
+        parenthesesStack.pop();
+    }
+}
+
 void VisualCalculator::updateTextShow(const QString& text)
 {
     QString formattedText = text;
 
+    // Добавляем недостающие закрывающие скобки
+    int openBracketsCount = formattedText.count("(");
+    int closeBracketsCount = formattedText.count(")");
+    if (openBracketsCount > closeBracketsCount) {
+        formattedText.append(")");
+    }
+
+    // Удаляем закрывающую скобку, если есть только закрывающая, без открытой
+    if (closeBracketsCount > openBracketsCount) {
+        formattedText.chop(1);
+    }
+
     // Добавляем пробелы между числами и операндами, если они отсутствуют
     QRegularExpression spaceRegex("(\\d)([+\\-*/])");
     formattedText.replace(spaceRegex, "\\1 \\2 ");
-    formattedText.replace("(", "( ");
-    formattedText.replace(")", " )");
 
+    // Добавляем пробелы перед и после скобок
+    formattedText.replace("(", " ( ");
+    formattedText.replace(")", " ) ");
+
+    // Добавляем знак умножения, если между числом и скобкой есть пробел
+    QRegularExpression numberBracketRegex("(\\d) \\(");
+    formattedText.replace(numberBracketRegex, "\\1 * (");
+    QRegularExpression bracketNumberRegex("\\) (\\d)");
+    formattedText.replace(bracketNumberRegex, ") * \\1");
+
+    formattedText.replace(") (",") * (");
+
+    // Удаляем лишние пробелы между числами
     QRegularExpression numberRegex("(\\d) (\\d)");
     formattedText.replace(numberRegex, "\\1\\2");
 
+
     // Обновляем текст в textShow
-    textShow->setText(formattedText);
+    ui->textShow->setText(formattedText);
+}
+
+// Копируем выражение в буфер обмена
+void VisualCalculator::copyExpressionToClipboard()
+{
+    QString expression = ui->showResult->text();
+
+    QApplication::clipboard()->setText(expression);
 }
 
