@@ -1,7 +1,7 @@
 # Visual-calculator
 This is a simple calculator application built using Qt framework. It allows users to perform basic arithmetic calculations and converts expressions to reverse Polish notation (RPN).
 
-you need to connect a third-party project with the Calculator Utils namespace, 
+you need to connect a third-party project with the CalculatorUtils namespace(https://github.com/YuarenArt/CalculatorUtils), 
 which defines functions for calculations and transformations that do not depend on the Visualcalculator class
 
 
