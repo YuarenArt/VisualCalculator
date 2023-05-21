@@ -25,20 +25,17 @@ public:
     VisualCalculator(QWidget *parent = nullptr);
     ~VisualCalculator();
 
-    QStringList convertToRPN(const QString& expression);
-
-    double performOperation(double operand1, double operand2, const QString& operation);
-    double calculateExpression(const QString& expression);
-
 private:
 
     Ui::VisualCalculator* ui;
     
 public slots:
 
-    void updateTextShow(const QString& text);
-    void calculate();
+    void updateDisplayText(const QString& text);
+    void calculateResult();
     void copyExpressionToClipboard();
+    void clearExpression();
+    void handleEnterPressed();
 
 
 };

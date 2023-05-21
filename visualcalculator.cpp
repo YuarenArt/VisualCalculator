@@ -26,78 +26,69 @@ bool isOperator(const QString& token)
 {
     return token == "+" || token == "-" || token == "*" || token == "/";
 }
-
-VisualCalculator::VisualCalculator(QWidget *parent) : QMainWindow(parent), ui(new Ui::VisualCalculator)
+// Добавляет недостающие закрывающие скобки
+void autoBalanceParentheses(QString& expression)
 {
-    ui->setupUi(this);
+    QStack<QChar> parenthesesStack;
 
-    ui->showResult->setReadOnly(true);
-    ui->textShow->setReadOnly(true);
+    for (int i = 0; i < expression.length(); ++i) {
+        QChar ch = expression.at(i);
 
-    // Установка размера шрифта
-    QFont font = ui->textShow->font();
-    font.setPointSize(font.pointSize() + 10);
-    ui->textShow->setFont(font);
-
-    connect(ui->lineEdit, &QLineEdit::textChanged, this, &VisualCalculator::updateTextShow);
-    connect(ui->equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculate);
-    connect(ui->copyBtn, &QPushButton::clicked, this, &VisualCalculator::copyExpressionToClipboard);
-}
-
-VisualCalculator::~VisualCalculator()
-{
-    delete ui;
-}
-
-void VisualCalculator::calculate()
-{
-    QString expression = ui->textShow->toPlainText();
-
-    // Проверяем пустой ввод
-    if (expression.isEmpty())
-    {
-        // Очищаем результат
-        ui->showResult->setText(" ");
-        return;
-    }
-
-    double result = calculateExpression(expression);
-
-    // Обновляем текст в showResult
-    ui->showResult->setText(QString::number(result));
-}
-
-double VisualCalculator::calculateExpression(const QString& expression)
-{
-    // Создание списка токенов (числа и операторы)
-    QStringList tokens = convertToRPN(expression);
-
-    if (tokens.isEmpty())
-    {
-        return 0;
-    }
-
-    // Заполняем оба стека
-    QStack<double> numbersStack;
-
-    for (const QString& token : tokens) {
-        if (!isOperator(token)) {
-            // Текущий токен - число
-            numbersStack.push(token.toDouble());
+        if (ch == '(') {
+            // Открывающая скобка, добавляем ее в стек
+            parenthesesStack.push(ch);
         }
-        else {
-            // Текущий токен - оператор
-            double operand2 = numbersStack.pop();
-            double operand1 = numbersStack.pop();
-            double result = performOperation(operand1, operand2, token);
-            numbersStack.push(result);
+        else if (ch == ')') {
+            // Закрывающая скобка
+
+            if (parenthesesStack.isEmpty()) {
+                // Нет соответствующей открывающей скобки, удаляем закрывающую скобку
+                expression.remove(i, 1);
+                --i;
+            }
+            else {
+                // Есть соответствующая открывающая скобка, удаляем ее из стека
+                parenthesesStack.pop();
+            }
         }
     }
 
-    return numbersStack.pop();
+    // Добавляем недостающие закрывающие скобки
+    while (!parenthesesStack.isEmpty()) {
+        expression.append(')');
+        parenthesesStack.pop();
+    }
 }
 
-QStringList VisualCalculator::convertToRPN(const QString& expression) {
+// расчитываете выражение с одним операндом
+double performOperation(double operand1, double operand2, const QString& operation)
+{
+    if (operation == "+") {
+        return operand1 + operand2;
+    }
+    else if (operation == "-") {
+        return operand1 - operand2;
+    }
+    else if (operation == "*") {
+        return operand1 * operand2;
+    }
+    else if (operation == "/") {
+        if (operand2 == 0) {
+            QMessageBox::warning(nullptr, "Warning", "You divide by zero");
+        }
+        return operand1 / operand2;
+    }
+
+
+
+    else {
+        // Неподдерживаемая операция
+        return std::numeric_limits<double>::quiet_NaN();
+    }
+}
+
+// перевод обычной строки в обратную польскую нотацию
+QStringList convertToRPN(const QString& expression) {
 
     QStringList outputQueue;  // Очередь для выходной обратной польской записи
     QStack<QString> operatorStack;  // Стек для операторов
@@ -163,64 +154,83 @@ QStringList VisualCalculator::convertToRPN(const QString& expression) {
     return outputQueue;
 }
 
-double VisualCalculator::performOperation(double operand1, double operand2, const QString& operation)
+double calculateExpression(const QString& expression)
 {
-    if (operation == "+") {
-        return operand1 + operand2;
+    // Создание списка токенов (числа и операторы)
+    QStringList tokens = convertToRPN(expression);
+
+    if (tokens.isEmpty())
+    {
+        return 0;
     }
-    else if (operation == "-") {
-        return operand1 - operand2;
-    }
-    else if (operation == "*") {
-        return operand1 * operand2;
-    }
-    else if (operation == "/") {
-        if (operand2 == 0)   {
-            QMessageBox::warning(nullptr, "Warning", "You divide by zero");
+
+    // Заполняем оба стека
+    QStack<double> numbersStack;
+
+    for (const QString& token : tokens) {
+        if (!isOperator(token)) {
+            // Текущий токен - число
+            numbersStack.push(token.toDouble());
         }
-        return operand1 / operand2;
+        else {
+            // Текущий токен - оператор
+
+            // Если введён только операнд без чисел возвращаем 0
+            if (numbersStack.isEmpty()) return 0.0;
+
+            double operand2 = numbersStack.pop();
+            double operand1 = numbersStack.pop();
+            double result = performOperation(operand1, operand2, token);
+            numbersStack.push(result);
+        }
     }
-    else {
-        // Неподдерживаемая операция
-        return std::numeric_limits<double>::quiet_NaN();
-    }
+
+    return numbersStack.pop();
 }
 
-// Добавляет недостающие закрывающие скобки
-void autoBalanceParentheses(QString& expression)
+VisualCalculator::VisualCalculator(QWidget *parent) : QMainWindow(parent), ui(new Ui::VisualCalculator)
 {
-    QStack<QChar> parenthesesStack;
+    ui->setupUi(this);
 
-    for (int i = 0; i < expression.length(); ++i) {
-        QChar ch = expression.at(i);
 
-        if (ch == '(') {
-            // Открывающая скобка, добавляем ее в стек
-            parenthesesStack.push(ch);
-        }
-        else if (ch == ')') {
-            // Закрывающая скобка
-
-            if (parenthesesStack.isEmpty()) {
-                // Нет соответствующей открывающей скобки, удаляем закрывающую скобку
-                expression.remove(i, 1);
-                --i;
-            }
-            else {
-                // Есть соответствующая открывающая скобка, удаляем ее из стека
-                parenthesesStack.pop();
-            }
-        }
-    }
-
-    // Добавляем недостающие закрывающие скобки
-    while (!parenthesesStack.isEmpty()) {
-        expression.append(')');
-        parenthesesStack.pop();
-    }
+    connect(ui->lineEdit, &QLineEdit::textChanged, this, &VisualCalculator::updateDisplayText);
+    connect(ui->equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculateResult);
+    connect(ui->copyBtn, &QPushButton::clicked, this, &VisualCalculator::copyExpressionToClipboard);
+    connect(ui->clearBtn, &QPushButton::clicked, this, &VisualCalculator::clearExpression);
+    connect(ui->lineEdit, &QLineEdit::returnPressed, this, &VisualCalculator::handleEnterPressed);
 }
 
-void VisualCalculator::updateTextShow(const QString& text)
+VisualCalculator::~VisualCalculator()
+{
+    delete ui;
+}
+
+void VisualCalculator::clearExpression()
+{
+    ui->lineEdit->clear();
+    calculateResult();
+}
+
+void VisualCalculator::calculateResult()
+{
+    QString expression = ui->textShow->toPlainText();
+
+    // Проверяем пустой ввод
+    if (expression.isEmpty())
+    {
+        // Очищаем результат
+        ui->showResult->setText(" ");
+        return;
+    }
+
+    double result = calculateExpression(expression);
+
+    // Обновляем текст в showResult
+    ui->showResult->setText(QString::number(result));
+}
+
+
+void VisualCalculator::updateDisplayText(const QString& text)
 {
     QString formattedText = text;
 
@@ -228,7 +238,7 @@ void VisualCalculator::updateTextShow(const QString& text)
     int openBracketsCount = formattedText.count("(");
     int closeBracketsCount = formattedText.count(")");
     if (openBracketsCount > closeBracketsCount) {
-        formattedText.append(")");
+        formattedText.append(") ");
     }
 
     // Удаляем закрывающую скобку, если есть только закрывающая, без открытой
@@ -241,8 +251,8 @@ void VisualCalculator::updateTextShow(const QString& text)
     formattedText.replace(spaceRegex, "\\1 \\2 ");
 
     // Добавляем пробелы перед и после скобок
-    formattedText.replace("(", " ( ");
-    formattedText.replace(")", " ) ");
+    formattedText.replace(QRegularExpression("\\("), " ( ");
+    formattedText.replace(QRegularExpression("\\)"), " ) ");
 
     // Добавляем знак умножения, если между числом и скобкой есть пробел
     QRegularExpression numberBracketRegex("(\\d) \\(");
@@ -250,18 +260,24 @@ void VisualCalculator::updateTextShow(const QString& text)
     QRegularExpression bracketNumberRegex("\\) (\\d)");
     formattedText.replace(bracketNumberRegex, ") * \\1");
 
-    formattedText.replace(") (",") * (");
+    // Добавляем знак умножения, если между скобками нет знака операции
+    formattedText.replace(QRegularExpression("\\)\\s*\\("), ") * (");
 
     // Удаляем лишние пробелы между числами
     QRegularExpression numberRegex("(\\d) (\\d)");
     formattedText.replace(numberRegex, "\\1\\2");
 
+    // Добавляем пробел после операнда, который следует после закрывающей скобки
+    formattedText.replace(QRegularExpression("\\)([+\\-*/])"), ") \\1\\");
+
+    // Объединяем числа, если между ними есть пробел, но нет операнда
+    formattedText.replace(QRegularExpression("(\\d) + (\\d)"), "\\1\\2");
 
     // Обновляем текст в textShow
     ui->textShow->setText(formattedText);
 }
 
-// Копируем выражение в буфер обмена
+// Слот копирует выражение в буфер обмена
 void VisualCalculator::copyExpressionToClipboard()
 {
     QString expression = ui->showResult->text();
@@ -269,3 +285,8 @@ void VisualCalculator::copyExpressionToClipboard()
     QApplication::clipboard()->setText(expression);
 }
 
+// Слот для обработки события нажатия клавиши Enter
+void VisualCalculator::handleEnterPressed()
+{
+    calculateResult();
+}
