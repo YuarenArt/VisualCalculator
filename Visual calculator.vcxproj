@@ -86,7 +86,6 @@
     <QtRcc Include="visualcalculator.qrc" />
     <QtUic Include="visualcalculator.ui" />
     <QtMoc Include="visualcalculator.h" />
-    <ClCompile Include="..\..\..\..\..\..\QT Lib\CalculatorUtils\CalculatorUtils.cpp" />
     <ClCompile Include="visualcalculator.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "visualcalculator.h"
 #include <QClipboard>
 #include <ui_visualcalculator.h>
+#include "CalculatorUtils.cpp"
 
 int getOperatorPrecedence(const QString& op) {
     if (op == "+" || op == "-") {
