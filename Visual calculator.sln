@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Visual calculator", "Visual calculator.vcxproj", "{2CC8AFD2-8508-49EF-9E16-F01330AB87E1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CalculatorUtils", "..\..\..\..\..\..\QT Lib\CalculatorUtils\CalculatorUtils.vcxproj", "{86136633-8107-40A8-9792-B1B40B925253}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CalculatorUtils", "..\..\..\..\..\..\QT Lib\CalculatorUtils\CalculatorUtils.vcxproj", "{CE64812C-05EB-47F3-B304-E55EDB6DDEB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{2CC8AFD2-8508-49EF-9E16-F01330AB87E1}.Debug|x64.Build.0 = Debug|x64
 		{2CC8AFD2-8508-49EF-9E16-F01330AB87E1}.Release|x64.ActiveCfg = Release|x64
 		{2CC8AFD2-8508-49EF-9E16-F01330AB87E1}.Release|x64.Build.0 = Release|x64
-		{86136633-8107-40A8-9792-B1B40B925253}.Debug|x64.ActiveCfg = Debug|x64
-		{86136633-8107-40A8-9792-B1B40B925253}.Debug|x64.Build.0 = Debug|x64
-		{86136633-8107-40A8-9792-B1B40B925253}.Release|x64.ActiveCfg = Release|x64
-		{86136633-8107-40A8-9792-B1B40B925253}.Release|x64.Build.0 = Release|x64
+		{CE64812C-05EB-47F3-B304-E55EDB6DDEB7}.Debug|x64.ActiveCfg = Debug|x64
+		{CE64812C-05EB-47F3-B304-E55EDB6DDEB7}.Debug|x64.Build.0 = Debug|x64
+		{CE64812C-05EB-47F3-B304-E55EDB6DDEB7}.Release|x64.ActiveCfg = Release|x64
+		{CE64812C-05EB-47F3-B304-E55EDB6DDEB7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
