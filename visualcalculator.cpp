@@ -49,22 +49,15 @@ void VisualCalculator::calculateResult()
     ui->showResult->setText(QString::number(result));
 }
 
+
+
 // выводит введенное пользователем выражение
 void VisualCalculator::updateDisplayText(const QString& text)
 {
     QString formattedText = text;
 
     // Добавляем недостающие закрывающие скобки
-    int openBracketsCount = formattedText.count("(");
-    int closeBracketsCount = formattedText.count(")");
-    if (openBracketsCount > closeBracketsCount) {
-        formattedText.append(") ");
-    }
-
-    // Удаляем закрывающую скобку, если есть только закрывающая, без открытой
-    if (closeBracketsCount > openBracketsCount) {
-        formattedText.chop(1);
-    }
+    autoBalanceParentheses(formattedText);
 
     // Добавляем пробелы между числами и операндами, если они отсутствуют
     QRegularExpression spaceRegex("(\\d)([+\\-*/])");
@@ -75,7 +68,7 @@ void VisualCalculator::updateDisplayText(const QString& text)
     formattedText.replace(QRegularExpression("\\)"), " ) ");
 
     // Добавляем знак умножения, если между числом и скобкой есть пробел
-    QRegularExpression numberBracketRegex("(\\d) \\(");
+    QRegularExpression numberBracketRegex("(\\d) *\\(");
     formattedText.replace(numberBracketRegex, "\\1 * (");
     QRegularExpression bracketNumberRegex("\\) (\\d)");
     formattedText.replace(bracketNumberRegex, ") * \\1");
@@ -84,11 +77,16 @@ void VisualCalculator::updateDisplayText(const QString& text)
     formattedText.replace(QRegularExpression("\\)\\s*\\("), ") * (");
 
     // Удаляем лишние пробелы между числами
-    QRegularExpression numberRegex("(\\d) (\\d)");
+    QRegularExpression numberRegex("(\\d*)\\s+(\\d)");
     formattedText.replace(numberRegex, "\\1\\2");
 
-    // Объединяем числа, если между ними есть пробел, но нет операнда
-    formattedText.replace(QRegularExpression("(\\d) + (\\d)"), "\\1\\2");
+    // Удаления между операндами и числами
+    //formattedText.replace(QRegularExpression("([+\\-*/])(\\d)"), "\\1 \\2 ");
+    formattedText.replace(QRegularExpression("(\\d+)\\s+([+\\-*/])"), "\\1 \\2");
+    formattedText.replace(QRegularExpression("([+\\-*/])\\s*(\\d+)"), "\\1 \\2");
+
+
+    formattedText.replace(QRegularExpression(",") , ".");
 
     // Обновляем текст в textShow
     ui->textShow->setText(formattedText);
@@ -102,7 +100,7 @@ void VisualCalculator::copyExpressionToClipboard()
     QApplication::clipboard()->setText(expression);
 }
 
-// Слот для обработки события нажатия клавиши Enter
+// Слот для обработки события нажатия клавиши Enter в lineEdit
 void VisualCalculator::handleEnterPressed()
 {
     calculateResult();
