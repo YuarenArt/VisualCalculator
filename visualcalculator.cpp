@@ -12,17 +12,22 @@ VisualCalculator::VisualCalculator(QWidget *parent) : QMainWindow(parent), ui(ne
 {
     ui->setupUi(this);
 
-
     connect(ui->lineEdit, &QLineEdit::textChanged, this, &VisualCalculator::updateDisplayText);
     connect(ui->equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculateResult);
     connect(ui->copyBtn, &QPushButton::clicked, this, &VisualCalculator::copyExpressionToClipboard);
     connect(ui->clearBtn, &QPushButton::clicked, this, &VisualCalculator::clearExpression);
     connect(ui->lineEdit, &QLineEdit::returnPressed, this, &VisualCalculator::handleEnterPressed);
+    connect(ui->historyList, &QListWidget::itemDoubleClicked, this, &VisualCalculator::historyListDoubleClicked);
 }
 
 VisualCalculator::~VisualCalculator()
 {
     delete ui;
+}
+
+void VisualCalculator::updateHistoryList(const QString& text)
+{
+    ui->historyList->addItem(text);
 }
 
 void VisualCalculator::clearExpression()
@@ -44,6 +49,8 @@ void VisualCalculator::calculateResult()
     }
     // вычисляем выражение
     double result = calculateExpression(expression);
+
+    updateHistoryList(expression);
 
     // Обновляем текст в showResult
     ui->showResult->setText(QString::number(result));
@@ -107,4 +114,10 @@ void VisualCalculator::copyExpressionToClipboard()
 void VisualCalculator::handleEnterPressed()
 {
     calculateResult();
+}
+
+void VisualCalculator::historyListDoubleClicked()
+{
+    QListWidgetItem* item = ui->historyList->currentItem();
+    ui->lineEdit->setText(item->text());
 }

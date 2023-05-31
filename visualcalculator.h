@@ -25,6 +25,8 @@ public:
     VisualCalculator(QWidget *parent = nullptr);
     ~VisualCalculator();
 
+    void updateHistoryList(const QString& text);
+
 private:
 
     Ui::VisualCalculator* ui;
@@ -36,6 +38,7 @@ public slots:
     void copyExpressionToClipboard();
     void clearExpression();
     void handleEnterPressed();
+    void historyListDoubleClicked();
 
 
 };
