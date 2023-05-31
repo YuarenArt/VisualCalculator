@@ -1,8 +1,11 @@
 #include "visualcalculator.h"
 #include <QClipboard>
 #include <ui_visualcalculator.h>
-#include "\QT Lib\CalculatorUtils\CalculatorUtils.cpp"
 
+//you need to connect a third-party project with the CalculatorUtils namespace(https://github.com/YuarenArt/CalculatorUtils), 
+//which defines functions for calculations and transformations that do not depend on the Visualcalculator class
+
+#include "\QT Lib\CalculatorUtils\CalculatorUtils.cpp"
 using namespace CalculatorUtils;
 
 VisualCalculator::VisualCalculator(QWidget *parent) : QMainWindow(parent), ui(new Ui::VisualCalculator)
@@ -39,14 +42,14 @@ void VisualCalculator::calculateResult()
         ui->showResult->setText(" ");
         return;
     }
-
+    // вычисляем выражение
     double result = calculateExpression(expression);
 
     // Обновляем текст в showResult
     ui->showResult->setText(QString::number(result));
 }
 
-
+// выводит введенное пользователем выражение
 void VisualCalculator::updateDisplayText(const QString& text)
 {
     QString formattedText = text;
@@ -83,9 +86,6 @@ void VisualCalculator::updateDisplayText(const QString& text)
     // Удаляем лишние пробелы между числами
     QRegularExpression numberRegex("(\\d) (\\d)");
     formattedText.replace(numberRegex, "\\1\\2");
-
-    // Добавляем пробел после операнда, который следует после закрывающей скобки
-    formattedText.replace(QRegularExpression("\\)([+\\-*/])"), ") \\1\\");
 
     // Объединяем числа, если между ними есть пробел, но нет операнда
     formattedText.replace(QRegularExpression("(\\d) + (\\d)"), "\\1\\2");
