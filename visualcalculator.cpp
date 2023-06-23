@@ -56,8 +56,6 @@ void VisualCalculator::calculateResult()
     ui->showResult->setText(QString::number(result));
 }
 
-
-
 // выводит введенное пользователем выражение
 void VisualCalculator::updateDisplayText(const QString& text)
 {
@@ -67,7 +65,7 @@ void VisualCalculator::updateDisplayText(const QString& text)
     autoBalanceParentheses(formattedText);
 
     // ƒобавл€ем пробелы между числами и операндами, если они отсутствуют
-    QRegularExpression spaceRegex("(\\d)([+\\-*/^sqrtloglnsincostancottgctg])");
+    QRegularExpression spaceRegex("(\\d)([+\\-*/^sqrtloglnlgsincostancottgctg])");
     formattedText.replace(spaceRegex, "\\1 \\2 ");
 
     // ƒобавл€ем пробелы перед и после скобок
@@ -88,15 +86,14 @@ void VisualCalculator::updateDisplayText(const QString& text)
     formattedText.replace(numberRegex, "\\1\\2");
 
     // ”далени€ между операндами и числами
-    formattedText.replace(QRegularExpression("([+\\-*/^sqrtloglnsincostancottgctg])(\\d+)"), "\\1 \\2");
-    formattedText.replace(QRegularExpression("(\\d+)\\s+([+\\-*/^sqrtloglnsincostancottgctg])"), "\\1 \\2");
-    formattedText.replace(QRegularExpression("([+\\-*/]^sqrtloglnsincostancottgctg)\\s*(\\d+)"), "\\1 \\2");
+    formattedText.replace(QRegularExpression("([+\\-*/sqrtloglnsincostanlgcottgctg])(\\d+)"), "\\1 \\2");
+    formattedText.replace(QRegularExpression("(\\d+)\\s+([+\\-*/sqrtloglnsinlgcostancottgctg])"), "\\1 \\2");
+    formattedText.replace(QRegularExpression("([+\\-*/]sqrtloglnsincostancottgctglg)\\s*(\\d+)"), "\\1 \\2");
+
+    formattedText.replace(QRegularExpression("([cossintgtancthcotloglnsqrtlg^])\\s+(\\d+)"), "\\1 ( \\2 )");
 
 
     formattedText.replace(QRegularExpression(",") , ".");
-
-    /*formattedText.replace(QRegularExpression("(cos)\\s+(\\d)"), "\\1\\2");
-    formattedText.replace(QRegularExpression("(sqrt)\\s+(\\d)"), "\\1\\2");*/
 
     // ќбновл€ем текст в textShow
     ui->textShow->setText(formattedText);
