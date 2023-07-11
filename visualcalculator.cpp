@@ -1,6 +1,7 @@
 #include "visualcalculator.h"
 #include <QClipboard>
-#include <ui_visualcalculator.h>
+#include <ui_standartvisualcalculator.h>
+#include <ui_integralvisualvalculator.h>
 
 //you need to connect a third-party project with the CalculatorUtils namespace(https://github.com/YuarenArt/CalculatorUtils), 
 //which defines functions for calculations and transformations that do not depend on the Visualcalculator class
@@ -8,9 +9,33 @@
 #include "\QT Lib\CalculatorUtils\CalculatorUtils.cpp"
 using namespace CalculatorUtils;
 
-VisualCalculator::VisualCalculator(QWidget *parent) : QMainWindow(parent), ui(new Ui::VisualCalculator)
+VisualCalculator::VisualCalculator(QWidget *parent) : QMainWindow(parent), ui(new Ui::standartVisualCalculator), ui_integral(nullptr)
+{
+    generateStandartInterface();
+}
+
+void VisualCalculator::generateStandartInterface()
 {
     ui->setupUi(this);
+
+
+
+    QMenu* menu = new QMenu(ui->menuChoice);
+
+    // —оздание действий (пунктов меню)
+    QAction* setDefault = new QAction("Default calculator", menu);
+    QAction* setIntegral = new QAction("Numerical Integral Calculator", menu);
+
+    // ƒобавление действий в меню
+    menu->addAction(setDefault);
+    menu->addAction(setIntegral);
+    // ”становка меню дл€ QToolButton
+    ui->menuChoice->setMenu(menu);
+    // ”становка стил€ всплывающего меню
+    ui->menuChoice->setPopupMode(QToolButton::InstantPopup);
+
+    connect(setDefault, &QAction::triggered, this, &VisualCalculator::loadStandardInterface);
+    connect(setIntegral, &QAction::triggered, this, &VisualCalculator::updateInterfaceIntegral);
 
     connect(ui->lineEdit, &QLineEdit::textChanged, this, &VisualCalculator::updateDisplayText);
     connect(ui->equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculateResult);
@@ -25,17 +50,20 @@ VisualCalculator::~VisualCalculator()
     delete ui;
 }
 
+// функци€ добавл€ет прошлые выражени€ в список 
 void VisualCalculator::updateHistoryList(const QString& text)
 {
     ui->historyList->addItem(text);
 }
 
+// очищает введенное выражение
 void VisualCalculator::clearExpression()
 {
     ui->lineEdit->clear();
     calculateResult();
 }
 
+//
 void VisualCalculator::calculateResult()
 {
     QString expression = ui->textShow->toPlainText();
@@ -92,7 +120,10 @@ void VisualCalculator::updateDisplayText(const QString& text)
 
     formattedText.replace(QRegularExpression("([cossintgtancthcotloglnsqrtlg^])\\s+(\\d+)"), "\\1 ( \\2 )");
 
+    // «амена числа на формат 0.xxx, если число начинаетс€ с нул€ (021 = 0.21)
+    formattedText.replace(QRegularExpression("(0)(\\d+)"), "\\1.\\2");
 
+    // «амена ',' при вводе чисел на '.' дл€ правильных вычислений
     formattedText.replace(QRegularExpression(",") , ".");
 
     // ќбновл€ем текст в textShow
@@ -113,8 +144,31 @@ void VisualCalculator::handleEnterPressed()
     calculateResult();
 }
 
+// при двоном щедчке по спику выражений в листе истории, добавл€ет выбранное выражение в lineEdit
 void VisualCalculator::historyListDoubleClicked()
 {
     QListWidgetItem* item = ui->historyList->currentItem();
     ui->lineEdit->setText(item->text());
 }
+
+// перерисовывает интерфейс приложени€ дл€ расчета численных значений интегралов
+void VisualCalculator::updateInterfaceIntegral()
+{
+
+    ui_integral = new Ui_integral::integralVisualCalculator;
+    QWidget* integralWidget = new QWidget(this);
+    ui_integral->setupUi(integralWidget);
+
+    setCentralWidget(integralWidget);
+
+}
+
+// рисует стандартный интефейс - обычный калькул€тор
+void VisualCalculator::loadStandardInterface()
+{
+    QSize windowSize = size();
+    generateStandartInterface();
+    resize(windowSize);
+
+}
+

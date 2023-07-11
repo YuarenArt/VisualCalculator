@@ -1,4 +1,5 @@
 <RCC>
-    <qresource prefix="VisualCalculator">
+    <qresource prefix="/VisualCalculator">
+        <file>фон.jpg</file>
     </qresource>
 </RCC>

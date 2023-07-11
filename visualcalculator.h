@@ -11,11 +11,13 @@
 #include <QMessageBox>
 #include <QStack>
 #include <QtWidgets/QApplication>
+#include <QUiLoader>
+#include <QFile>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class VisualCalculator; }
+namespace Ui { class standartVisualCalculator; }
+namespace Ui_integral { class integralVisualCalculator; }
 QT_END_NAMESPACE
-
 
 class VisualCalculator : public QMainWindow
 {
@@ -26,11 +28,13 @@ public:
     ~VisualCalculator();
 
     void updateHistoryList(const QString& text);
+    void generateStandartInterface();
 
 private:
 
-    Ui::VisualCalculator* ui;
-    
+    Ui::standartVisualCalculator* ui;
+    Ui_integral::integralVisualCalculator* ui_integral;
+
 public slots:
 
     void updateDisplayText(const QString& text);
@@ -39,6 +43,8 @@ public slots:
     void clearExpression();
     void handleEnterPressed();
     void historyListDoubleClicked();
+    void updateInterfaceIntegral();
+    void loadStandardInterface();
 
 
 };
