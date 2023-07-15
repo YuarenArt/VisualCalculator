@@ -228,8 +228,8 @@
             <widget class="QLineEdit" name="lineEditVariable">
              <property name="minimumSize">
               <size>
-               <width>40</width>
-               <height>40</height>
+               <width>30</width>
+               <height>30</height>
               </size>
              </property>
              <property name="font">
@@ -249,8 +249,8 @@
             <widget class="QLineEdit" name="lineEditChoiceVariable">
              <property name="minimumSize">
               <size>
-               <width>40</width>
-               <height>40</height>
+               <width>30</width>
+               <height>30</height>
               </size>
              </property>
              <property name="text">
@@ -272,8 +272,8 @@
             <widget class="QLineEdit" name="lineEditUpperLimit">
              <property name="minimumSize">
               <size>
-               <width>40</width>
-               <height>40</height>
+               <width>30</width>
+               <height>30</height>
               </size>
              </property>
              <property name="font">
@@ -293,8 +293,8 @@
             <widget class="QLineEdit" name="lineEditChoiceUpperLimit">
              <property name="minimumSize">
               <size>
-               <width>40</width>
-               <height>40</height>
+               <width>30</width>
+               <height>30</height>
               </size>
              </property>
             </widget>
@@ -313,8 +313,8 @@
             <widget class="QLineEdit" name="lineEditLowerLimit">
              <property name="minimumSize">
               <size>
-               <width>40</width>
-               <height>40</height>
+               <width>30</width>
+               <height>30</height>
               </size>
              </property>
              <property name="font">
@@ -334,8 +334,8 @@
             <widget class="QLineEdit" name="lineEditChoiceLowerLimit">
              <property name="minimumSize">
               <size>
-               <width>40</width>
-               <height>40</height>
+               <width>30</width>
+               <height>30</height>
               </size>
              </property>
             </widget>
