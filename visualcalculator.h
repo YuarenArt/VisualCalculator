@@ -11,8 +11,7 @@
 #include <QMessageBox>
 #include <QStack>
 #include <QtWidgets/QApplication>
-#include <QUiLoader>
-#include <QFile>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class standartVisualCalculator; }
@@ -30,6 +29,8 @@ public:
     void updateHistoryList(const QString& text);
     void generateStandartInterface();
 
+    qlonglong  evaluateFunction(double x);
+
 private:
 
     Ui::standartVisualCalculator* ui;
@@ -37,14 +38,20 @@ private:
 
 public slots:
 
+    //функции для всех видов калькулятора
     void updateDisplayText(const QString& text);
-    void calculateResult();
     void copyExpressionToClipboard();
     void clearExpression();
     void handleEnterPressed();
     void historyListDoubleClicked();
-    void updateInterfaceIntegral();
+
+    //функции стандартного калькулятора
+    void calculateResult();
     void loadStandardInterface();
+
+    //функции калькулятора интегралов
+    void calculateResultIntegral();
+    void updateInterfaceIntegral();
 
 
 };

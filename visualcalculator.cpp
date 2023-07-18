@@ -148,6 +148,9 @@ void VisualCalculator::updateDisplayText(const QString& text)
         // ƒобавл€ем недостающие закрывающие скобки
         updateText(formattedText);
 
+        formattedText.replace(QRegularExpression("(\\d+)(\\w+)"), "\\1 * \\2");
+        formattedText.replace(QRegularExpression("(\\w+)([+\\-*/^lgsqrtloglnsincostancottgctg])"), "\\1 \\2");
+
         // ќбновл€ем текст в textShow
         ui_integral->textShow->setText(formattedText);
     }
@@ -186,6 +189,20 @@ void VisualCalculator::historyListDoubleClicked()
     }
 }
 
+// расчет введенного интеграла
+void VisualCalculator::calculateResultIntegral()
+{
+    qlonglong upperLimit = ui_integral->lineEditChoiceUpperLimit->text().toLongLong();
+    qlonglong lowerLimit = ui_integral->lineEditChoiceLowerLimit->text().toLongLong();
+
+    QString function = ui_integral->textShow->toPlainText();
+    QString variable = ui_integral->lineEditChoiceVariable->text();
+
+    qlonglong result = calculateSimpsonIntegral(function, variable, upperLimit, lowerLimit);
+    ui_integral->showResult->setText(QString::number(result));
+    updateHistoryList(QString::number(result));
+}
+
 // перерисовывает интерфейс приложени€ дл€ расчета численных значений интегралов
 void VisualCalculator::updateInterfaceIntegral()
 {
@@ -218,7 +235,7 @@ void VisualCalculator::updateInterfaceIntegral()
     connect(setIntegral, &QAction::triggered, this, &VisualCalculator::updateInterfaceIntegral);
 
     connect(ui_integral->lineEdit, &QLineEdit::textChanged, this, &VisualCalculator::updateDisplayText);
-    connect(ui_integral->equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculateResult);
+    connect(ui_integral->equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculateResultIntegral);
     connect(ui_integral->copyBtn, &QPushButton::clicked, this, &VisualCalculator::copyExpressionToClipboard);
     connect(ui_integral->clearBtn, &QPushButton::clicked, this, &VisualCalculator::clearExpression);
     connect(ui_integral->lineEdit, &QLineEdit::returnPressed, this, &VisualCalculator::handleEnterPressed);
