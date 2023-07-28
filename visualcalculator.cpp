@@ -21,32 +21,23 @@ void VisualCalculator::generateStandartInterface()
         ui_integral = nullptr;
     }
 
-    /*ui_integral = new Ui_integral::integralVisualCalculator;
-    QWidget* integralWidget = new QWidget(this);
-    ui_integral->setupUi(integralWidget);
-
-    setCentralWidget(integralWidget);*/
-
     ui = new Ui::standartVisualCalculator;
     ui->setupUi(this);
 
+    // Create and set up a drop-down menu to switch between the standard calculator and the integral calculator
     QMenu* menu = new QMenu(ui->menuChoice);
-
-    // Создание действий (пунктов меню)
     QAction* setDefault = new QAction("Default calculator", menu);
     QAction* setIntegral = new QAction("Numerical Integral Calculator", menu);
-
-    // Добавление действий в меню
     menu->addAction(setDefault);
     menu->addAction(setIntegral);
-    // Установка меню для QToolButton
     ui->menuChoice->setMenu(menu);
-    // Установка стиля всплывающего меню
     ui->menuChoice->setPopupMode(QToolButton::InstantPopup);
 
+    // Connect the actions to their corresponding slots
     connect(setDefault, &QAction::triggered, this, &VisualCalculator::loadStandardInterface);
     connect(setIntegral, &QAction::triggered, this, &VisualCalculator::updateInterfaceIntegral);
 
+    // Connect various UI elements to their respective slots for user interaction
     connect(ui->lineEdit, &QLineEdit::textChanged, this, &VisualCalculator::updateDisplayText);
     connect(ui->equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculateResult);
     connect(ui->copyBtn, &QPushButton::clicked, this, &VisualCalculator::copyExpressionToClipboard);
@@ -61,7 +52,7 @@ VisualCalculator::~VisualCalculator()
     delete ui_integral;
 }
 
-// функция добавляет прошлые выражения в список 
+// Function to add expressions to the history list
 void VisualCalculator::updateHistoryList(const QString& text)
 {
     if (ui) {
@@ -73,7 +64,7 @@ void VisualCalculator::updateHistoryList(const QString& text)
     }
 }
 
-// очищает введенное выражение
+// Function to clear the input expression
 void VisualCalculator::clearExpression()
 {
     if (ui) {
@@ -86,28 +77,26 @@ void VisualCalculator::clearExpression()
     }
 }
 
-//
+// Function to calculate the result of the expression and update the display
 void VisualCalculator::calculateResult()
 {
     if (ui) {
         QString expression = ui->textShow->toPlainText();
 
-        // Проверяем пустой ввод
         if (expression.isEmpty())
         {
-            // Очищаем результат
-            ui->showResult->setText(" ");
+            ui->showResult->setText(" "); // Clear the result display if the expression is empty
             return;
         }
-        // вычисляем выражение
-        double result = calculateExpression(expression);
+
+        double result = calculateExpression(expression); // Perform the actual calculation
 
         updateHistoryList(expression);
 
-        // Обновляем текст в showResult
-        ui->showResult->setText(QString::number(result));
+        ui->showResult->setText(QString::number(result)); // Display the result
     }
     else {
+        // Same as above but for the integral calculator
         QString expression = ui_integral->textShow->toPlainText();
 
         // Проверяем пустой ввод
@@ -118,17 +107,11 @@ void VisualCalculator::calculateResult()
             return;
         }
         // вычисляем выражение
-        double result = calculateExpression(expression);
-
-        updateHistoryList(expression);
-
-        // Обновляем текст в showResult
-        ui_integral->showResult->setText(QString::number(result));
+        calculateResultIntegral();
     }
 }
 
-// выводит введенное пользователем выражение
-
+// Function to update the displayed expression in the text box
 void VisualCalculator::updateDisplayText(const QString& text)
 {
     if (ui)
@@ -145,11 +128,12 @@ void VisualCalculator::updateDisplayText(const QString& text)
     else {
         QString formattedText = text;
 
-        // Добавляем недостающие закрывающие скобки
+       
         updateText(formattedText);
 
-        formattedText.replace(QRegularExpression("(\\d+)(\\w+)"), "\\1 * \\2");
-        formattedText.replace(QRegularExpression("(\\w+)([+\\-*/^lgsqrtloglnsincostancottgctg])"), "\\1 \\2");
+        QString variable = ui_integral->lineEditChoiceVariable->text();
+
+        formattedText.replace(QRegularExpression("(\\d+)([a-zA-Z])"), "\\1*\\2");
 
         // Обновляем текст в textShow
         ui_integral->textShow->setText(formattedText);
@@ -157,7 +141,7 @@ void VisualCalculator::updateDisplayText(const QString& text)
 
 }
 
-// Слот копирует выражение в буфер обмена
+// Function to copy the result to the clipboard
 void VisualCalculator::copyExpressionToClipboard()
 {
     if (ui) {
@@ -170,13 +154,13 @@ void VisualCalculator::copyExpressionToClipboard()
     }
 }
 
-// Слот для обработки события нажатия клавиши Enter в lineEdit
+// Slot for handling the Enter key press event in the lineEdit
 void VisualCalculator::handleEnterPressed()
 {
     calculateResult();
 }
 
-// при двоном щедчке по спику выражений в листе истории, добавляет выбранное выражение в lineEdit
+// Slot for handling the double-click event on the history list
 void VisualCalculator::historyListDoubleClicked()
 {
     if (ui) {
@@ -189,18 +173,18 @@ void VisualCalculator::historyListDoubleClicked()
     }
 }
 
-// расчет введенного интеграла
+// Function to calculate the result of the integral expression
 void VisualCalculator::calculateResultIntegral()
 {
-    qlonglong upperLimit = ui_integral->lineEditChoiceUpperLimit->text().toLongLong();
-    qlonglong lowerLimit = ui_integral->lineEditChoiceLowerLimit->text().toLongLong();
+    double upperLimit = ui_integral->lineEditChoiceUpperLimit->text().toDouble();
+    double lowerLimit = ui_integral->lineEditChoiceLowerLimit->text().toDouble();
 
     QString function = ui_integral->textShow->toPlainText();
     QString variable = ui_integral->lineEditChoiceVariable->text();
 
-    qlonglong result = calculateSimpsonIntegral(function, variable, upperLimit, lowerLimit);
-    ui_integral->showResult->setText(QString::number(result));
-    updateHistoryList(QString::number(result));
+    double result = calculateSimpsonIntegral(function, variable, upperLimit, lowerLimit);
+    ui_integral->showResult->setText(QString::number(result, 'f'));
+    updateHistoryList(ui_integral->lineEdit->text());
 }
 
 // перерисовывает интерфейс приложения для расчета численных значений интегралов
@@ -235,7 +219,7 @@ void VisualCalculator::updateInterfaceIntegral()
     connect(setIntegral, &QAction::triggered, this, &VisualCalculator::updateInterfaceIntegral);
 
     connect(ui_integral->lineEdit, &QLineEdit::textChanged, this, &VisualCalculator::updateDisplayText);
-    connect(ui_integral->equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculateResultIntegral);
+    connect(ui_integral->equalBtn, &QPushButton::clicked, this, &VisualCalculator::calculateResult);
     connect(ui_integral->copyBtn, &QPushButton::clicked, this, &VisualCalculator::copyExpressionToClipboard);
     connect(ui_integral->clearBtn, &QPushButton::clicked, this, &VisualCalculator::clearExpression);
     connect(ui_integral->lineEdit, &QLineEdit::returnPressed, this, &VisualCalculator::handleEnterPressed);
@@ -245,9 +229,6 @@ void VisualCalculator::updateInterfaceIntegral()
 // рисует стандартный интефейс - обычный калькулятор
 void VisualCalculator::loadStandardInterface()
 {
-
     generateStandartInterface();
-
-
 }
 
