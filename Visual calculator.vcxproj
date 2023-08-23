@@ -32,7 +32,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.4.3_mingw_64</QtInstall>
-    <QtModules>core;gui;widgets;uitools;qml;</QtModules>
+    <QtModules>core;gui;widgets;uitools;qml</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
@@ -98,6 +98,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="фон.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtTranslation Include="Translation_en.ts" />
+    <QtTranslation Include="Translation_ru.ts" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

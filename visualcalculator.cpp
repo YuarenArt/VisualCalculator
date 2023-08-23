@@ -26,8 +26,8 @@ void VisualCalculator::generateStandartInterface()
 
     // Create and set up a drop-down menu to switch between the standard calculator and the integral calculator
     QMenu* menu = new QMenu(ui->menuChoice);
-    QAction* setDefault = new QAction("Default calculator", menu);
-    QAction* setIntegral = new QAction("Numerical Integral Calculator", menu);
+    QAction* setDefault = new QAction(tr("Default calculator"), menu);
+    QAction* setIntegral = new QAction(tr("Numerical Integral Calculator"), menu);
     menu->addAction(setDefault);
     menu->addAction(setIntegral);
     ui->menuChoice->setMenu(menu);
@@ -89,23 +89,13 @@ void VisualCalculator::calculateResult()
             return;
         }
 
-        double result = calculateExpression(expression); // Perform the actual calculation
+        double result = calculateExpressionWithRPN(expression); // Perform the actual calculation
 
         updateHistoryList(expression);
 
         ui->showResult->setText(QString::number(result)); // Display the result
     }
     else {
-        // Same as above but for the integral calculator
-        QString expression = ui_integral->textShow->toPlainText();
-
-        // Проверяем пустой ввод
-        if (expression.isEmpty())
-        {
-            // Очищаем результат
-            ui_integral->showResult->setText(" ");
-            return;
-        }
         // вычисляем выражение
         calculateResultIntegral();
     }
