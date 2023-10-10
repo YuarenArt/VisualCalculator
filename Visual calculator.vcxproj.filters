@@ -26,7 +26,7 @@
     <QtRcc Include="visualcalculator.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="visualcalculator.ui">
+    <QtUic Include="standartvisualcalculator.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtMoc Include="visualcalculator.h">

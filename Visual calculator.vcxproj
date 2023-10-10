@@ -32,7 +32,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.4.3_mingw_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;uitools;qml</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
@@ -58,6 +58,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -84,10 +90,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="visualcalculator.qrc" />
-    <QtUic Include="visualcalculator.ui" />
+    <QtUic Include="standartvisualcalculator.ui" />
     <QtMoc Include="visualcalculator.h" />
     <ClCompile Include="visualcalculator.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="integralvisualvalculator.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="фон.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtTranslation Include="Translation_en.ts" />
+    <QtTranslation Include="Translation_ru.ts" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
