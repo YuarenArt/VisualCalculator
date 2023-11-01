@@ -91,17 +91,18 @@
   <ItemGroup>
     <QtRcc Include="visualcalculator.qrc" />
     <QtUic Include="standartvisualcalculator.ui" />
-    <QtMoc Include="visualcalculator.h" />
-    <ClCompile Include="visualcalculator.cpp" />
+    <QtMoc Include="visual_calculator.h" />
+    <ClCompile Include="calculator_interface.cpp" />
+    <ClCompile Include="visual_calculator.cpp" />
     <ClCompile Include="main.cpp" />
     <QtUic Include="integralvisualvalculator.ui" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="фон.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <QtTranslation Include="Translation_en.ts" />
     <QtTranslation Include="Translation_ru.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="calculator_interface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

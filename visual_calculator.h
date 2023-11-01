@@ -44,14 +44,7 @@ public slots:
     void clearExpression();
     void handleEnterPressed();
     void historyListDoubleClicked();
-
-    //функции стандартного калькулятора
-    void calculateResult();
-    void loadStandardInterface();
-
-    //функции калькулятора интегралов
-    void calculateResultIntegral();
-    void updateInterfaceIntegral();
+    void calculate();
 
 
 };
