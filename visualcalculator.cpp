@@ -6,7 +6,7 @@
 //you need to connect a third-party project with the CalculatorUtils namespace(https://github.com/YuarenArt/CalculatorUtils), 
 //which defines functions for calculations and transformations that do not depend on the Visualcalculator class
 
-#include "\QT Lib\CalculatorUtils\CalculatorUtils.cpp"
+#include "CalculatorUtils\CalculatorUtils.cpp"
 using namespace CalculatorUtils;
 
 VisualCalculator::VisualCalculator(QWidget* parent) : QMainWindow(parent), ui(new Ui::standartVisualCalculator), ui_integral(nullptr)
@@ -172,7 +172,7 @@ void VisualCalculator::calculateResultIntegral()
     QString function = ui_integral->textShow->toPlainText();
     QString variable = ui_integral->lineEditChoiceVariable->text();
 
-    double result = calculateSimpsonIntegral(function, variable, upperLimit, lowerLimit);
+    double result = calculateIntegralSimpsonsMethod(function, variable, upperLimit, lowerLimit);
     ui_integral->showResult->setText(QString::number(result, 'f'));
     updateHistoryList(ui_integral->lineEdit->text());
 }
