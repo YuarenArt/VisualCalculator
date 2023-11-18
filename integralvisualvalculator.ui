@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>integralVisualCalculator</class>
- <widget class="QWidget" name="integralVisualCalculator">
+ <class>integralCalculator</class>
+ <widget class="QWidget" name="integralCalculator">
   <property name="geometry">
    <rect>
     <x>0</x>

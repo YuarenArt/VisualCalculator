@@ -14,8 +14,8 @@
 
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class standartVisualCalculator; }
-namespace Ui_integral { class integralVisualCalculator; }
+namespace Ui { class standartCalculator; }
+namespace Ui { class integralCalculator; }
 QT_END_NAMESPACE
 
 class VisualCalculator : public QMainWindow
@@ -29,12 +29,10 @@ public:
     void updateHistoryList(const QString& text);
     void generateStandartInterface();
 
-    qlonglong  evaluateFunction(double x);
-
 private:
 
-    Ui::standartVisualCalculator* ui;
-    Ui_integral::integralVisualCalculator* ui_integral;
+    Ui::standartCalculator* ui_standart;
+    Ui::integralCalculator* ui_integral;
 
 public slots:
 

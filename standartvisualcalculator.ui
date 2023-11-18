@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>standartVisualCalculator</class>
- <widget class="QMainWindow" name="standartVisualCalculator">
+ <class>standartCalculator</class>
+ <widget class="QMainWindow" name="standartCalculator">
   <property name="geometry">
    <rect>
     <x>0</x>
