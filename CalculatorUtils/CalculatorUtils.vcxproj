@@ -83,9 +83,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CalculatorUtils.cpp" />
+    <ClCompile Include="CalculatorUtils.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level2</WarningLevel>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CalculatorUtils.h" />
     <ClInclude Include="stringRefactor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

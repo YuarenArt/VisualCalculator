@@ -31,5 +31,8 @@
     <ClInclude Include="stringRefactor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CalculatorUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

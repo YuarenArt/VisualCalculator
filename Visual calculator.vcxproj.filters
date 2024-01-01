@@ -26,23 +26,29 @@
     <QtRcc Include="visualcalculator.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <QtUic Include="standartvisualcalculator.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtMoc Include="visualcalculator.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="visualcalculator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Calculators\standartcalculator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Calculators\integralcalculator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Calculators\visualcalculator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="integralvisualvalculator.ui">
+    <QtUic Include="standartcalculator.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Calculators\integralcalculator.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Calculators\visualcalculator.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -60,7 +66,13 @@
     </QtTranslation>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="visualcalculator.h">
+    <QtMoc Include="Calculators\standartcalculator.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Calculators\integralcalculator.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Calculators\visualcalculator.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

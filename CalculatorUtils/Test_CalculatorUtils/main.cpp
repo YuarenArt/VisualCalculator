@@ -168,26 +168,24 @@ void Test_CalculatorUtils::testIsOperatorWithOneOperand()
 
 void Test_CalculatorUtils::testAutoBalanceParentheses_data()
 {
-    QTest::addColumn<QString>("inputExpression");
-    QTest::addColumn<QString>("expectedBalancedExpression");
+    QTest::addColumn<QString>("input");
+    QTest::addColumn<QString>("expectedResult");
 
-
-    QTest::newRow("balanced expression 1") << "(1 + 2)" << "(1 + 2)";
-    QTest::newRow("balanced expression 2") << "25 * (23 - (45" << "25 * (23 - (45))";
-    QTest::newRow("missing closing parenthesis") << "(1 + 2" << "(1 + 2)";
-    QTest::newRow("missing opening parenthesis") << "1 + 2)" << "1 + 2";
-    QTest::newRow("multiple missing opening parentheses") << "1 + 2))" << "1 + 2";
-    QTest::newRow("multiple missing closing parentheses") << "((1 + 2" << "((1 + 2))";
+    QTest::newRow("balanced parentheses 1") << "(a+b)*c" << "(a+b)*c";
+    QTest::newRow("balanced parentheses 2") << "((a+b)*c)" << "((a+b)*c)";
+    QTest::newRow("missing opening parentheses") << "a+b)*c" << "a+b*c";
+    QTest::newRow("missing closing parentheses") << "(a+b*c" << "(a+b*c)";
+    QTest::newRow("nested parentheses") << "(a+(b+c" << "(a+(b+c))";
+    
 }
+
 void Test_CalculatorUtils::testAutoBalanceParentheses()
 {
-    QFETCH(QString, inputExpression);
-    QFETCH(QString, expectedBalancedExpression);
+    QFETCH(QString, input);
+    QFETCH(QString, expectedResult);
 
-    QString expression = inputExpression;
-    CalculatorUtils::autoBalanceParentheses(expression);
-
-    QCOMPARE(expression, expectedBalancedExpression);
+    QString formattedInput = CalculatorUtils::autoBalanceParentheses(input);
+    QCOMPARE(formattedInput, expectedResult);
 }
 
 

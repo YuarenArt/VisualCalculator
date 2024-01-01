@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QRegularExpression>
 #include <QString>
 
@@ -8,12 +9,15 @@ namespace CalculatorUtils {
     {
     public:
         StringRefactor(QString text);
-        void updateStandartText();
+
+        void updateStandardText();
         QString getFormattedText();
 
-    private:
+        
 
+    private:
         QString formattedText;
+        QRegularExpression regex;   // ќдин экземпл€р дл€ многократного использовани€
 
         void addSpacesBetweenNumbersAndOperators();
         void addSpacesAroundBrackets();
@@ -24,7 +28,6 @@ namespace CalculatorUtils {
         void removeLeadingZerosAndNormalizeDecimals();
         void removeExtraDecimals();
         void replaceCommasWithPeriods();
-        void handleMinusSigns();
         void removeExtraSpaces();
     };
 }

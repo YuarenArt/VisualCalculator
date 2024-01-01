@@ -1,37 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>integralCalculator</class>
- <widget class="QWidget" name="integralCalculator">
+ <class>Integralcalculator</class>
+ <widget class="QWidget" name="Integralcalculator">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>390</width>
-    <height>500</height>
+    <height>448</height>
    </rect>
   </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>300</width>
-    <height>400</height>
-   </size>
-  </property>
-  <property name="baseSize">
-   <size>
-    <width>350</width>
-    <height>500</height>
-   </size>
-  </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Integralcalculator</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="centralWidget">
      <item>
@@ -285,7 +267,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2" rowspan="2" colspan="2">
+       <item row="0" column="0" rowspan="2" colspan="4">
         <widget class="QListWidget" name="historyList">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -322,52 +304,13 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0" rowspan="3">
-        <widget class="QToolButton" name="menuChoice">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-           <horstretch>100</horstretch>
-           <verstretch>25</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>25</height>
-          </size>
-         </property>
-         <property name="mouseTracking">
-          <bool>true</bool>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::TabFocus</enum>
-         </property>
-         <property name="autoFillBackground">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>...</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="checked">
-          <bool>false</bool>
-         </property>
-         <property name="popupMode">
-          <enum>QToolButton::MenuButtonPopup</enum>
-         </property>
-         <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonIconOnly</enum>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>
