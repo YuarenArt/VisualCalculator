@@ -4,55 +4,55 @@
 #include <QMenu>
 #include <QClipboard>
 
-Integralcalculator::Integralcalculator(QWidget *parent)
+IntegralCalculator::IntegralCalculator(QWidget *parent)
 	: QWidget(parent)
-	, ui(new Ui::Integralcalculator())
+	, ui(new Ui::IntegralCalculator())
 {
 	ui->setupUi(this);
 
     // Connect various UI elements to their respective slots for user interaction
-    connect(ui->lineEdit, &QLineEdit::textChanged, this, &Integralcalculator::updateDisplayText);
-    connect(ui->equalBtn, &QPushButton::clicked, this, &Integralcalculator::calculateResult);
-    connect(ui->copyBtn, &QPushButton::clicked, this, &Integralcalculator::copyExpressionToClipboard);
-    connect(ui->clearBtn, &QPushButton::clicked, this, &Integralcalculator::clearExpression);
-    connect(ui->lineEdit, &QLineEdit::returnPressed, this, &Integralcalculator::handleEnterPressed);
-    connect(ui->historyList, &QListWidget::itemDoubleClicked, this, &Integralcalculator::historyListDoubleClicked);
+    connect(ui->lineEdit, &QLineEdit::textChanged, this, &IntegralCalculator::updateDisplayText);
+    connect(ui->equalBtn, &QPushButton::clicked, this, &IntegralCalculator::calculateResult);
+    connect(ui->copyBtn, &QPushButton::clicked, this, &IntegralCalculator::copyExpressionToClipboard);
+    connect(ui->clearBtn, &QPushButton::clicked, this, &IntegralCalculator::clearExpression);
+    connect(ui->lineEdit, &QLineEdit::returnPressed, this, &IntegralCalculator::handleEnterPressed);
+    connect(ui->historyList, &QListWidget::itemDoubleClicked, this, &IntegralCalculator::historyListDoubleClicked);
 }
 
-Integralcalculator::~Integralcalculator()
+IntegralCalculator::~IntegralCalculator()
 {
 	delete ui;
 }
 
-void Integralcalculator::updateHistoryList(const QString& text)
+void IntegralCalculator::updateHistoryList(const QString& text)
 {
 	ui->historyList->addItem(text);
 }
 
-void Integralcalculator::copyExpressionToClipboard()
+void IntegralCalculator::copyExpressionToClipboard()
 {
 	QString expression = ui->showResult->text();
 	QApplication::clipboard()->setText(expression);
 }
 
-void Integralcalculator::clearExpression()
+void IntegralCalculator::clearExpression()
 {
 	ui->lineEdit->clear();
 	calculateResult();
 }
 
-void Integralcalculator::handleEnterPressed()
+void IntegralCalculator::handleEnterPressed()
 {
 	calculateResult();
 }
 
-void Integralcalculator::historyListDoubleClicked()
+void IntegralCalculator::historyListDoubleClicked()
 {
 	QListWidgetItem* item = ui->historyList->currentItem();
 	ui->lineEdit->setText(item->text());
 }
 
-void Integralcalculator::calculateResult()
+void IntegralCalculator::calculateResult()
 {
 	double upperLimit = ui->lineEditChoiceUpperLimit->text().toDouble();
     double lowerLimit = ui->lineEditChoiceLowerLimit->text().toDouble();
@@ -65,7 +65,7 @@ void Integralcalculator::calculateResult()
     updateHistoryList(ui->lineEdit->text());
 }
 
-void Integralcalculator::updateDisplayText(const QString& text) 
+void IntegralCalculator::updateDisplayText(const QString& text) 
 {
 	QString newText = CalculatorUtils::updateText(text);
 	ui->textShow->setText(newText);

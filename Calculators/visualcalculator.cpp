@@ -7,7 +7,7 @@ const int integralID = 1;
 
 VisualCalculator::VisualCalculator(QWidget* parent)
 	: QMainWindow(parent)
-	, ui(new Ui::VisualCalculator()), standartCalculator(new StandartCalculator), integralCalculator(new Integralcalculator)
+	, ui(new Ui::VisualCalculator()), standartCalculator(new StandartCalculator), integralCalculator(new IntegralCalculator)
 {
 	ui->setupUi(this);
 

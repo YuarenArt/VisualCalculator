@@ -215,6 +215,10 @@ namespace CalculatorUtils {
 
     double calculateExpressionWithRPN(const QString& expression)
     {
+        if (!isValidInput(expression)) {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+
         // Создание списка токенов (числа и операторы)
         QStringList tokens = convertToRPN(expression);
 
@@ -276,8 +280,16 @@ namespace CalculatorUtils {
         return refactoredString.getFormattedText();
     }
 
+    bool isExpression(const QString& expression) {
+        return false;
+    }
+
     double calculateExpressionWithVariable(const QString& expression, const QString& variable, double variableValue)
     {
+        if (!isValidInput(expression)) {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+
         QString variableValueString = QString::number(variableValue);
         QString substitutedExpression = expression;
         substitutedExpression.replace(variable, variableValueString);

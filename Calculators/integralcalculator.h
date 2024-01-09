@@ -4,16 +4,16 @@
 #include "ui_integralcalculator.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class Integralcalculator; };
+namespace Ui { class IntegralCalculator; };
 QT_END_NAMESPACE
 
-class Integralcalculator : public QWidget
+class IntegralCalculator : public QWidget
 {
 	Q_OBJECT
 
 public:
-	Integralcalculator(QWidget *parent = nullptr);
-	~Integralcalculator();
+	IntegralCalculator(QWidget *parent = nullptr);
+	~IntegralCalculator();
 
     void updateHistoryList(const QString& text);
 
@@ -27,5 +27,5 @@ public slots:
     void calculateResult();
 
 private:
-	Ui::Integralcalculator *ui;
+	Ui::IntegralCalculator *ui;
 };

@@ -20,7 +20,7 @@ public:
 
 private:
 	Ui::VisualCalculator *ui;
-	Integralcalculator* integralCalculator;
+	IntegralCalculator* integralCalculator;
 	StandartCalculator* standartCalculator;
 
 private slots:
