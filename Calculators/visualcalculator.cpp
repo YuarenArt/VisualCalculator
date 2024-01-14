@@ -24,3 +24,8 @@ VisualCalculator::~VisualCalculator()
 {
 	delete ui;
 }
+
+void VisualCalculator::onChoiceCalculatorMenuChanged(int index)
+{
+	ui->stackedWidget->setCurrentIndex(index);
+}

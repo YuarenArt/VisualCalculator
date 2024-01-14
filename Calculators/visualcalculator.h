@@ -24,7 +24,5 @@ private:
 	StandartCalculator* standartCalculator;
 
 private slots:
-	void onChoiceCalculatorMenuChanged(int index) {
-		ui->stackedWidget->setCurrentIndex(index);
-	}
+	void onChoiceCalculatorMenuChanged(int index);
 };

@@ -270,7 +270,7 @@ namespace CalculatorUtils {
         return numbersStack.pop();
     }
 
-    QString updateText(const QString& text)
+    QString updateStandartText(const QString& text)
     {
         QString formattedText = text;
         formattedText = autoBalanceParentheses(formattedText);
@@ -280,19 +280,31 @@ namespace CalculatorUtils {
         return refactoredString.getFormattedText();
     }
 
+    QString updateIntegralText(const QString& text, const QString& variable)
+    {
+        QString formattedText = text;
+        formattedText = autoBalanceParentheses(formattedText);
+
+        StringRefactor refactoredString(formattedText);
+        refactoredString.updateIntegralText(variable);
+        return refactoredString.getFormattedText();
+    }
+
     bool isExpression(const QString& expression) {
         return false;
     }
 
     double calculateExpressionWithVariable(const QString& expression, const QString& variable, double variableValue)
     {
-        if (!isValidInput(expression)) {
-            return std::numeric_limits<double>::quiet_NaN();
-        }
 
         QString variableValueString = QString::number(variableValue);
         QString substitutedExpression = expression;
         substitutedExpression.replace(variable, variableValueString);
+
+        if (!isValidInput(substitutedExpression)) {
+
+            return std::numeric_limits<double>::quiet_NaN();
+        }
 
         return calculateExpressionWithRPN(substitutedExpression);
     }
@@ -329,16 +341,29 @@ namespace CalculatorUtils {
 
     void StringRefactor::updateStandardText()
     {
+        
         addSpacesBetweenNumbersAndOperators();
-        addSpacesAroundBrackets();
         addMultiplicationOperator();
+        addSpacesAroundBrackets();
         removeExtraSpacesBetweenNumbers();
         removeSpaceBetweenOperatorsAndNumbers();
-        formatNumbersWithOperators();
-        removeLeadingZerosAndNormalizeDecimals();
-        removeExtraDecimals();
         replaceCommasWithPeriods();
         removeExtraSpaces();
+        addSpacesAfterFuntionAndOperators();
+    }
+
+    void StringRefactor::updateIntegralText(const QString& variable)
+    {
+        addSpacesBetweenNumbersAndOperators();
+        addMultiplicationOperator();
+        addSpacesAroundBrackets();
+        removeExtraSpacesBetweenNumbers();
+        removeSpaceBetweenOperatorsAndNumbers();
+        replaceCommasWithPeriods();
+        removeExtraSpaces();
+        addSpacesAfterFuntionAndOperators();
+
+        ignoreVariableInFormatting(variable);
     }
 
     QString StringRefactor::getFormattedText()
@@ -348,8 +373,8 @@ namespace CalculatorUtils {
 
     void StringRefactor::addSpacesBetweenNumbersAndOperators()
     {
-        regex.setPattern("(\\d)([+\\-*/^sqrtloglnlgsincostancottgctg])");
-        formattedText.replace(regex, "\\1 \\2 ");
+        regex.setPattern("(\\d+)\\s*([+\\-*/^sqrtloglnlgsincostancottgctg])");
+        formattedText.replace(regex, "\\1 \\2");
     }
 
     void StringRefactor::addSpacesAroundBrackets()
@@ -364,10 +389,18 @@ namespace CalculatorUtils {
     {
         regex.setPattern("(\\d) *\\(");
         formattedText.replace(regex, "\\1 * (");
+
         regex.setPattern("\\) (\\d)");
         formattedText.replace(regex, ") * \\1 ");
+
         regex.setPattern("\\)\\s*\\(");
         formattedText.replace(regex, ") * (");
+
+        regex.setPattern("( \\) )\\s*([lgsqrtloglnsincostancottgctg])");
+        formattedText.replace(regex, "\\1 * \\2");
+
+        regex.setPattern("(\\d+)\\s*([lgsqrtloglnsincostancottgctg])");
+        formattedText.replace(regex, "\\1 * \\2");
     }
 
     void StringRefactor::removeExtraSpacesBetweenNumbers()
@@ -388,32 +421,6 @@ namespace CalculatorUtils {
         formattedText.replace(regex, "\\1 ( \\2 )");
     }
 
-    void StringRefactor::formatNumbersWithOperators()
-    {
-        regex.setPattern("^(0)(0*)(\\..*)?$");
-        formattedText.replace(regex, "\\1\\3");
-        regex.setPattern("(0)([1-9])(0*)");
-        formattedText.replace(regex, "\\1.\\2\\3");
-        regex.setPattern("(\\.)([1-9]+)(0+)(\\.)");
-        formattedText.replace(regex, "\\1\\2\\3");
-        regex.setPattern("(0+)(.)([1-9])");
-        formattedText.replace(regex, "0\\2\\3");
-    }
-
-    void StringRefactor::removeLeadingZerosAndNormalizeDecimals()
-    {
-        regex.setPattern("^(0)(0*)(\\..*)?$");
-        formattedText.replace(regex, "\\1\\3");
-        regex.setPattern("(0)([1-9])(0*)");
-        formattedText.replace(regex, "\\1.\\2\\3");
-    }
-
-    void StringRefactor::removeExtraDecimals()
-    {
-        regex.setPattern("(\\.)([1-9]+)(0+)(\\.)");
-        formattedText.replace(regex, "\\1\\2\\3");
-    }
-
     void StringRefactor::replaceCommasWithPeriods()
     {
         regex.setPattern(",");
@@ -426,5 +433,26 @@ namespace CalculatorUtils {
         formattedText.replace(regex, " ");
     }
 
+    void StringRefactor::addSpacesAfterFuntionAndOperators()
+    {
+        // Add parentheses around single-digit numbers
+        regex.setPattern( "([lgsqrtloglnsincostancottgctg])(\\d+)");
+        formattedText.replace(regex, "\\1 ( \\2 ) ");
+
+        regex.setPattern("("+ OPERATORS + ")\\s*(\\d+)");
+        formattedText.replace(regex, "\\1 \\2");
+    }
+
+    void StringRefactor::ignoreVariableInFormatting(const QString variable)
+    {
+        // Удаляем пробелы вокруг переменной и добавляем их в регулярное выражение
+        QString variablePattern = "\\b" + variable.trimmed() + "\\b";
+
+        // Используем регулярное выражение с обновленной переменной
+        QRegularExpression regex(variablePattern + "(\\d+)");
+        formattedText.replace(regex, "\\1");
+
+
+    }
 }
 

@@ -14,10 +14,11 @@ namespace CalculatorUtils {
 	double performOperation(double operand1, const QString& operation, double operand2 = 0);
 	QStringList convertToRPN(const QString& expression);
 	double calculateExpressionWithRPN(const QString& expression);
-	QString updateText(const QString& text);
+	QString updateStandartText(const QString& text);
 	double calculateExpressionWithVariable(const QString& expression, const QString& variable, double variableValue);
 	double calculateIntegralSimpsonsMethod(QString& function, const QString& variable, const double& upperLimit,
 		const double& lowerLimit, const qint64& n = 1000);
+	QString updateIntegralText(const QString& text, const QString& variable);
 
 	class StringRefactor;
 

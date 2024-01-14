@@ -67,6 +67,8 @@ void IntegralCalculator::calculateResult()
 
 void IntegralCalculator::updateDisplayText(const QString& text) 
 {
-	QString newText = CalculatorUtils::updateText(text);
+	QString variable = ui->lineEditChoiceVariable->text();
+
+	QString newText = CalculatorUtils::updateIntegralText(text, variable);
 	ui->textShow->setText(newText);
 }

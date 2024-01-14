@@ -45,7 +45,7 @@ void StandartCalculator::calculateResult()
 
 void StandartCalculator::updateDisplayText(const QString& text)
 {
-    QString newText = CalculatorUtils::updateText(text);
+    QString newText = CalculatorUtils::updateStandartText(text);
     ui->textShow->setText(newText);
 }
 

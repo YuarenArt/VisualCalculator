@@ -11,6 +11,7 @@ namespace CalculatorUtils {
         StringRefactor(QString text);
 
         void updateStandardText();
+        void updateIntegralText(const QString& variable);
         QString getFormattedText();
 
         
@@ -24,10 +25,10 @@ namespace CalculatorUtils {
         void addMultiplicationOperator();
         void removeExtraSpacesBetweenNumbers();
         void removeSpaceBetweenOperatorsAndNumbers();
-        void formatNumbersWithOperators();
-        void removeLeadingZerosAndNormalizeDecimals();
-        void removeExtraDecimals();
         void replaceCommasWithPeriods();
         void removeExtraSpaces();
+        void addSpacesAfterFuntionAndOperators();
+
+        void ignoreVariableInFormatting(const QString variable);
     };
 }
