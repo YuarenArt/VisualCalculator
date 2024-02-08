@@ -290,10 +290,6 @@ namespace CalculatorUtils {
         return refactoredString.getFormattedText();
     }
 
-    bool isExpression(const QString& expression) {
-        return false;
-    }
-
     double calculateExpressionWithVariable(const QString& expression, const QString& variable, double variableValue)
     {
 
