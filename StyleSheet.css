@@ -41,14 +41,13 @@ QListWidget {
             color: black; /* цвет текста выбранного элемента */
         }
 
-QScrollBar:vertical {
+QScrollBar {
     background-color: #ffffff; /* цвет фона вертикальной полосы прокрутки */
     border: 1px outset #d4d4d4; /* границы */
     border-radius: 8px; /* радиус скругления границ */
     width: 10px; /* ширина полосы прокрутки */
     margin: 0px 0px 0px 0px;
 }
-
 
 
 /* Стили для строки ввода */
