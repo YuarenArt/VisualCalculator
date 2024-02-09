@@ -101,14 +101,14 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="фон.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <QtTranslation Include="Translation_en.ts" />
     <QtTranslation Include="Translation_ru.ts" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Calculators\visualcalculator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="StyleSheet.css" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

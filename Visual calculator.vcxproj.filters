@@ -53,11 +53,6 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="фон.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <QtTranslation Include="Translation_en.ts">
       <Filter>Translation Files</Filter>
     </QtTranslation>
@@ -75,5 +70,10 @@
     <QtMoc Include="Calculators\visualcalculator.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="StyleSheet.css">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -169,6 +169,9 @@
          <property name="contextMenuPolicy">
           <enum>Qt::NoContextMenu</enum>
          </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="frameShape">
           <enum>QFrame::Box</enum>
          </property>

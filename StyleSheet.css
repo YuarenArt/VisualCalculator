@@ -1,0 +1,84 @@
+/* Общие стили для всех виджетов */
+QWidget {
+    border-radius: 5px; /* радиус скругления границ */
+}
+
+/* Стили для кнопок */
+QPushButton {
+    background-color: #ffffff; /* цвет фона */
+    color: black; /* цвет текста */
+    font-size: 16px; /* размер шрифта */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* тень */
+    border: 0.5px outset black; /* красивая обводка */
+    border-radius: 5px; /* радиус скругления границ */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* тень */
+}
+
+    QPushButton:hover {
+        background-color: #808080; /* изменение цвета фона при наведении */
+    }
+
+/* Стили для списка */
+QListWidget {
+    background-color: #f5f5f5; /* цвет фона */
+    border: 1px solid #d4d4d4; /* границы */
+    border-radius: 8px; /* радиус скругления границ */
+    padding: 5px; /* отступы внутри виджета */
+}
+
+    QListWidget::item {
+        background-color: #d4d4d4; /* цвет фона элемента */
+        padding: 10px; /* отступы внутри элемента */
+        border-radius: 5px; /* радиус скругления границ элемента */
+    }
+
+        QListWidget::item:hover {
+            background-color: #ffffff; /* измененный цвет фона при наведении на элемент */
+        }
+
+        QListWidget::item:selected {
+            background-color: white; /* цвет фона выбранного элемента */
+            color: black; /* цвет текста выбранного элемента */
+        }
+
+QScrollBar:vertical {
+    background-color: #ffffff; /* цвет фона вертикальной полосы прокрутки */
+    border: 1px outset #d4d4d4; /* границы */
+    border-radius: 8px; /* радиус скругления границ */
+    width: 10px; /* ширина полосы прокрутки */
+    margin: 0px 0px 0px 0px;
+}
+
+
+
+/* Стили для строки ввода */
+QLineEdit {
+    border-radius: 5px;
+    background-color: #ffffff; /* цвет фона */
+    border: 1px solid #d3d3d3; /* цвет рамки */
+    padding: 5px; /* внутренние отступы */
+}
+    QLineEdit:focus {
+        border-color: black; /* цвет рамки при фокусе */
+        border-style: solid; /* стиль рамки при фокусе */
+    }
+
+/* Стили для выпадающего списка */
+QComboBox {
+    background-color: #ffffff; /* цвет фона */
+    border: 1px solid #d3d3d3; /* цвет рамки */
+    padding: 5px; /* внутренние отступы */
+}
+
+/* Стили для текстового поля */
+QTextEdit {
+    border-radius: 5px; /* радиус скругления границ */
+    background-color: #ffffff; /* цвет фона */
+    border: 1px solid #d3d3d3; /* цвет рамки */
+    padding: 5px; /* внутренние отступы */
+}
+
+    QTextEdit:focus {
+        border-color: black; /* цвет рамки при фокусе */
+        border-style: solid; /* стиль рамки при фокусе */
+    }
